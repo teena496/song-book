@@ -7,65 +7,56 @@ import {
   TableHead,
   Table,
   Paper,
-  TextField,
-  Typography,
   Button,
 } from "@mui/material";
+
 import React, { useEffect, useState } from "react";
 import { db } from "./firebase-config";
 import {
   collection,
   getDocs,
-  addDoc,
   doc,
   deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
-
-const defaultRows = [
-  {
-    name: "Thank You Lord",
-    link: "https://www.youtube.com/watch?v=sax4aTgZ9dw",
-    artist: "Don Moen",
-    genre: "Gospel",
-    released: "2004",
-  },
-  {
-    name: "God Will Make A Way",
-    link: "https://www.youtube.com/watch?v=_rSWXf2Y4z0",
-    artist: "Don Moen",
-    genre: "Gospel",
-    released: "1992",
-  },
-  {
-    name: "I Will Sing",
-    link: "https://www.youtube.com/watch?v=lw9CcLGjouM",
-    artist: "Don Moen",
-    genre: "Gospel",
-    released: "2000",
-  },
-];
 
 export default function Home() {
   const [songs, setSongs] = useState([]);
-
+  const columnNames = [
+    { id: 1, name: "Song Name" },
+    { id: 2, name: "Artist" },
+    { id: 3, name: "Genre" },
+    { id: 4, name: "Released" },
+    { id: 5, name: "" },
+    { id: 6, name: "" },
+  ];
   const songsCollection = collection(db, "songs");
 
   useEffect(() => {
     const getSongs = async () => {
       const data = await getDocs(songsCollection);
       if (data) {
-        setSongs(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+        setSongs(
+          data.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }))
+        );
       } else return;
     };
     getSongs();
-  }, [songs]);
-
-  // const onUpdateSong = async () => {};
+  }, [songs, songsCollection]);
 
   const onDeleteSong = async (id) => {
-    console.log(id);
     const songDoc = doc(db, "songs", id);
     deleteDoc(songDoc);
+  };
+
+  const onUpdateSong = async (id) => {
+    // const songDoc = doc(db, "songs", id);
+    // await updateDoc(songDoc, {
+    //   name: "Test by Teena",
+    // });
   };
 
   return (
@@ -75,30 +66,31 @@ export default function Home() {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Song Name</TableCell>
-                <TableCell align="right">Artist</TableCell>
-                <TableCell align="right">Genre</TableCell>
-                <TableCell align="right">Released</TableCell>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right"></TableCell>
+                {columnNames.map((column) => (
+                  <TableCell
+                    key={`columnname-${column.id}`}
+                    data-testid={`columnname-${column.id}`}
+                    sx={{ fontSize: "1rem" }}
+                  >
+                    {column.name}
+                  </TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
               {songs.map((row) => (
-                <TableRow
-                  key={row.name}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    <a href={row.link} target="_blank">
-                      {row.name}
-                    </a>
+                <TableRow>
+                  <TableCell>
+                    <a href={row.link}>{row.name}</a>
                   </TableCell>
-                  <TableCell align="right">{row.artist}</TableCell>
-                  <TableCell align="right">{row.genre}</TableCell>
-                  <TableCell align="right">{row.released}</TableCell>
-                  <TableCell align="right">
+                  <TableCell>{row.artist}</TableCell>
+                  <TableCell>{row.genre}</TableCell>
+                  <TableCell>{row.released}</TableCell>
+                  <TableCell>
                     <Button onClick={() => onDeleteSong(row.id)}>Delete</Button>
+                  </TableCell>
+                  <TableCell>
+                    <Button onClick={() => onUpdateSong(row.id)}>Update</Button>
                   </TableCell>
                 </TableRow>
               ))}

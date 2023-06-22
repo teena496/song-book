@@ -1,7 +1,7 @@
 import { TextField, Container, Button } from "@mui/material";
 import React, { useState } from "react";
 import { db } from "./firebase-config";
-import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 
 export default function AddNewSong() {
   const [name, setName] = useState("");
@@ -9,8 +9,6 @@ export default function AddNewSong() {
   const [artist, setArtist] = useState("");
   const [genre, setGenre] = useState("");
   const [released, setReleased] = useState("");
-
-  const [songs, setSongs] = useState([]);
 
   const songsCollection = collection(db, "songs");
 
