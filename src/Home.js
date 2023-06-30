@@ -9,6 +9,7 @@ import {
   Paper,
   Button,
   Dialog,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useState, useCallback } from "react";
 import { db } from "./firebase-config";
@@ -37,10 +38,12 @@ export default function Home() {
           data.docs.map((doc) => ({
             ...doc.data(),
             id: doc.id,
+            videoId: doc.data().link.split("v=")[1],
           }))
         );
       } else return;
     }, []);
+
     return { getSongs };
   };
 
@@ -86,8 +89,20 @@ export default function Home() {
             <TableBody>
               {songs.map((row) => (
                 <TableRow key={row.id}>
-                  <TableCell>
-                    <a href={row.link}>{row.name}</a>
+                  <TableCell
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography>{row.name}</Typography>
+                    <a href={row.link}>
+                      <img
+                        width="200rem"
+                        src={`https://img.youtube.com/vi/${row.videoId}/0.jpg`}
+                      ></img>
+                    </a>
                   </TableCell>
                   <TableCell>{row.artist}</TableCell>
                   <TableCell>{row.genre}</TableCell>
