@@ -99,6 +99,7 @@ export default function Home() {
                     <Typography>{row.name}</Typography>
                     <a href={row.link}>
                       <img
+                        alt={row.name}
                         width="200rem"
                         src={`https://img.youtube.com/vi/${row.videoId}/0.jpg`}
                       ></img>
