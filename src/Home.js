@@ -8,20 +8,17 @@ import {
   Table,
   Paper,
   Button,
+  Dialog,
 } from "@mui/material";
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { db } from "./firebase-config";
-import {
-  collection,
-  getDocs,
-  doc,
-  deleteDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+import UpdateSong from "./UpdateSong";
 
 export default function Home() {
   const [songs, setSongs] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState(false);
   const columnNames = [
     { id: 1, name: "Song Name" },
     { id: 2, name: "Artist" },
@@ -32,8 +29,8 @@ export default function Home() {
   ];
   const songsCollection = collection(db, "songs");
 
-  useEffect(() => {
-    const getSongs = async () => {
+  const useSongCollection = () => {
+    const getSongs = useCallback(async () => {
       const data = await getDocs(songsCollection);
       if (data) {
         setSongs(
@@ -43,20 +40,29 @@ export default function Home() {
           }))
         );
       } else return;
-    };
+    }, []);
+    return { getSongs };
+  };
+
+  const { getSongs } = useSongCollection();
+
+  useEffect(() => {
     getSongs();
-  }, [songs, songsCollection]);
+  }, [getSongs]);
 
   const onDeleteSong = async (id) => {
     const songDoc = doc(db, "songs", id);
     deleteDoc(songDoc);
+    getSongs();
   };
 
   const onUpdateSong = async (id) => {
-    // const songDoc = doc(db, "songs", id);
-    // await updateDoc(songDoc, {
-    //   name: "Test by Teena",
-    // });
+    setOpen(true);
+    setSelectedRowId(id);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -79,7 +85,7 @@ export default function Home() {
             </TableHead>
             <TableBody>
               {songs.map((row) => (
-                <TableRow>
+                <TableRow key={row.id}>
                   <TableCell>
                     <a href={row.link}>{row.name}</a>
                   </TableCell>
@@ -90,7 +96,21 @@ export default function Home() {
                     <Button onClick={() => onDeleteSong(row.id)}>Delete</Button>
                   </TableCell>
                   <TableCell>
-                    <Button onClick={() => onUpdateSong(row.id)}>Update</Button>
+                    <div>
+                      <Button onClick={() => onUpdateSong(row.id)}>
+                        Update
+                      </Button>
+                    </div>
+                    {row.id === selectedRowId ? (
+                      <Dialog open={open} onClose={handleClose}>
+                        <UpdateSong
+                          id={row.id}
+                          selectedSong={row}
+                          handleClose={handleClose}
+                          getSongs={getSongs}
+                        />
+                      </Dialog>
+                    ) : null}
                   </TableCell>
                 </TableRow>
               ))}

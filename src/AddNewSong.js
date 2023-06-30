@@ -33,6 +33,7 @@ export default function AddNewSong() {
       >
         <TextField
           id="standard-basic"
+          data-testid="song-name"
           size="small"
           label="Song Name"
           value={name}
@@ -47,7 +48,7 @@ export default function AddNewSong() {
         />
         <TextField
           id="outlined-size-small"
-          defaultValue=""
+          data-testid="song-artist"
           size="small"
           label="Artist"
           value={artist}
@@ -55,7 +56,7 @@ export default function AddNewSong() {
         />
         <TextField
           id="outlined-size-small"
-          defaultValue=""
+          data-testid="song-genre"
           size="small"
           label="Genre"
           value={genre}
@@ -63,14 +64,18 @@ export default function AddNewSong() {
         />
         <TextField
           id="outlined-size-small"
-          defaultValue=""
+          data-testid="song-release"
           size="small"
           label="Released"
           value={released}
           onChange={(e) => setReleased(e.target.value)}
         />
-        <Button variant="contained" onClick={onAddClick}>
-          Add{" "}
+        <Button
+          data-testid="add-button"
+          variant="contained"
+          onClick={onAddClick}
+        >
+          Add
         </Button>
       </Container>
     </div>

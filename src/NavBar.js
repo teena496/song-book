@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import React from "react";
-import { AppBar, Button, Toolbar, Typography } from "@mui/material";
+import { AppBar, Toolbar, Typography } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { purple } from "@mui/material/colors";
 
@@ -37,9 +37,6 @@ export default function NavBar() {
             </Link>
             <Link style={{ textDecoration: "none" }} to="newSong">
               <Typography paddingRight={"20px"}> ADD NEW SONG</Typography>
-            </Link>
-            <Link style={{ textDecoration: "none" }} to="about">
-              <Typography paddingRight={"20px"}>ABOUT</Typography>
             </Link>
           </Toolbar>
         </AppBar>

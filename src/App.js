@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import About from "./About";
 import AddNewSong from "./AddNewSong";
 import Home from "./Home";
 import NavBar from "./NavBar";
+import UpdateSong from "./UpdateSong";
 
 export default function App() {
   return (
@@ -14,7 +14,6 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/newSong" element={<AddNewSong />} />
-            <Route path="/about" element={<About />} />
           </Routes>
         </div>
         {/* <Footer /> */}
