@@ -3,12 +3,8 @@ import { Typography, TextField } from "@mui/material";
 
 export default function SongField({ fieldname, fieldValue, setField }) {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <Typography
-        sx={{
-          padding: "5px 30px 30px 10px",
-        }}
-      >
+    <>
+      <Typography variant="h7" fontWeight="bold">
         {fieldname}
       </Typography>
       <TextField
@@ -19,6 +15,6 @@ export default function SongField({ fieldname, fieldValue, setField }) {
         value={fieldValue}
         onChange={(e) => setField(e.target.value)}
       />
-    </div>
+    </>
   );
 }

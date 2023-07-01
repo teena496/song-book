@@ -1,7 +1,8 @@
-import { TextField, Container, Button } from "@mui/material";
+import { Container, Button, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { db } from "./firebase-config";
 import { collection, addDoc } from "firebase/firestore";
+import SongField from "./SongField";
 
 export default function AddNewSong() {
   const [name, setName] = useState("");
@@ -25,50 +26,29 @@ export default function AddNewSong() {
   return (
     <div>
       <Container
+        maxWidth="sm"
         sx={{
           padding: "30px",
           display: "flex",
-          justifyContent: "space-around",
+          flexDirection: "column",
+          gap: 1,
         }}
       >
-        <TextField
-          id="standard-basic"
-          data-testid="song-name"
-          size="small"
-          label="Song Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+        <Typography variant="h5" fontWeight="bold" alignSelf="center">
+          ADD NEW SONG
+        </Typography>
+        <SongField fieldname="Song Name" fieldValue={name} setField={setName} />
+        <SongField fieldname="Link" fieldValue={link} setField={setLink} />
+        <SongField
+          fieldname="Artist"
+          fieldValue={artist}
+          setField={setArtist}
         />
-        <TextField
-          id="outlined-size-small"
-          size="small"
-          label="Link"
-          value={link}
-          onChange={(e) => setLink(e.target.value)}
-        />
-        <TextField
-          id="outlined-size-small"
-          data-testid="song-artist"
-          size="small"
-          label="Artist"
-          value={artist}
-          onChange={(e) => setArtist(e.target.value)}
-        />
-        <TextField
-          id="outlined-size-small"
-          data-testid="song-genre"
-          size="small"
-          label="Genre"
-          value={genre}
-          onChange={(e) => setGenre(e.target.value)}
-        />
-        <TextField
-          id="outlined-size-small"
-          data-testid="song-release"
-          size="small"
-          label="Released"
-          value={released}
-          onChange={(e) => setReleased(e.target.value)}
+        <SongField fieldname="Genre" fieldValue={genre} setField={setGenre} />
+        <SongField
+          fieldname="Released"
+          fieldValue={released}
+          setField={setReleased}
         />
         <Button
           data-testid="add-button"

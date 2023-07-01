@@ -6,7 +6,6 @@ import {
   TableBody,
   TableHead,
   Table,
-  Paper,
   Button,
   Dialog,
   Typography,
@@ -16,7 +15,7 @@ import { db } from "./firebase-config";
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import UpdateSong from "./UpdateSong";
 
-export default function Home() {
+export default function SongList() {
   const [songs, setSongs] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(false);
@@ -28,6 +27,7 @@ export default function Home() {
     { id: 5, name: "" },
     { id: 6, name: "" },
   ];
+
   const songsCollection = collection(db, "songs");
 
   const useSongCollection = () => {
@@ -71,17 +71,16 @@ export default function Home() {
   return (
     <div>
       <Container sx={{ padding: "30px" }}>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableContainer>
+          <Table sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow>
                 {columnNames.map((column) => (
                   <TableCell
                     key={`columnname-${column.id}`}
                     data-testid={`columnname-${column.id}`}
-                    sx={{ fontSize: "1rem" }}
                   >
-                    {column.name}
+                    <Typography variant="h6">{column.name}</Typography>
                   </TableCell>
                 ))}
               </TableRow>
@@ -105,18 +104,30 @@ export default function Home() {
                       ></img>
                     </a>
                   </TableCell>
-                  <TableCell>{row.artist}</TableCell>
-                  <TableCell>{row.genre}</TableCell>
-                  <TableCell>{row.released}</TableCell>
                   <TableCell>
-                    <Button onClick={() => onDeleteSong(row.id)}>Delete</Button>
+                    <Typography>{row.artist}</Typography>
                   </TableCell>
                   <TableCell>
-                    <div>
-                      <Button onClick={() => onUpdateSong(row.id)}>
-                        Update
-                      </Button>
-                    </div>
+                    <Typography>{row.genre}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>{row.released}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      onClick={() => onDeleteSong(row.id)}
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      onClick={() => onUpdateSong(row.id)}
+                    >
+                      Update
+                    </Button>
                     {row.id === selectedRowId ? (
                       <Dialog open={open} onClose={handleClose}>
                         <UpdateSong

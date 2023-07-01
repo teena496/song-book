@@ -8,7 +8,6 @@ import {
   Container,
   DialogActions,
 } from "@mui/material";
-import { purple } from "@mui/material/colors";
 import SongField from "./SongField";
 
 export default function UpdateSong({
@@ -39,12 +38,15 @@ export default function UpdateSong({
 
   return (
     <>
-      <DialogTitle color={purple[900]}>UPDATE SONG</DialogTitle>
+      <DialogTitle fontWeight={"bold"}>UPDATE SONG</DialogTitle>
       <DialogContent>
         <Container
           sx={{
             padding: "30px",
-            justifyContent: "space-around",
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+            width: "30rem",
           }}
         >
           <SongField
@@ -68,16 +70,14 @@ export default function UpdateSong({
         <DialogActions>
           <Button
             data-testid="cancel-button"
-            variant="outlined"
-            sx={{ xcolor: purple[900] }}
+            variant="contained"
             onClick={handleClose}
           >
             Cancel
           </Button>
           <Button
             data-testid="add-button"
-            variant="outlined"
-            sx={{ color: purple[900] }}
+            variant="contained"
             onClick={onUpdateClick}
           >
             Update
